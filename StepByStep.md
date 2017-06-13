@@ -169,6 +169,7 @@ function prepareButton(buttonEl, soundName) {
 - 给每个按钮加背景图，
 - 给每个按钮加一个点击事件来播放音频（调用HTML AudioElement接口）
 
+>代码提交：``commit 49459eb98300f79a13d0``；注解：``sounding on button clicked``
 
 # 参考资料
 
