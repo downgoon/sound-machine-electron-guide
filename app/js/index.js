@@ -25,3 +25,6 @@ var closeEl = document.querySelector('.close');
 closeEl.addEventListener('click', function () {
     ipc.send('close-main-window');
 });
+
+// 快捷键
+// var globalShortcut = require('global-shortcut');

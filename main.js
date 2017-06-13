@@ -21,3 +21,7 @@ var ipc = require('ipc');
 ipc.on('close-main-window', function () {
     app.quit();
 });
+
+
+// 快捷键
+var globalShortcut = require('global-shortcut');

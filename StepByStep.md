@@ -393,6 +393,86 @@ closeEl.addEventListener('click', function () {
 
 代码提交是``T02``的``quit on mydef event``，提交：``commit 8b6bbde6f7086adf884e4``。
 
+### T03 向着快捷键前进
+
+#### 任务目标
+
+我们刚完成了 ``tag-03``的功能，现在要朝着 ``tag-04``的功能前进。为此我们先看看 ``tag-04`` 的功能是什么。
+
+``` bash
+$ git checkout 04-global-shortcuts-bound
+$ npm start
+```
+
+然后按快捷键``ctrl+Shift+1``和``ctrl+Shift+2``就会发出声音。简单说就是在``tag-03``的依靠鼠标点击按钮的基础上，增加了快捷键的交互方式。
+
+#### 教程代码
+
+准备从``tag-03``开个分支，叫``T03``的，向着 ``tag-04``的目标功能前进。
+
+``` bash
+$ git checkout 03-closable-sound-machine
+$ git checkout -b T03
+$ git checkout T02 StepByStep.md assets
+$ git add .
+$ git commit -m 'merge StepByStep.md and assets into T03'
+```
+
+#### 背景知识
+
+- ``global-shortcut`` 库
+
+快捷键硬件资源的使用，需要用到 ``electron``的 ``require('global-shortcut');`` 库。这个库是``global``的，必须在主进程（``main.js``）中使用，无法在页面渲染进程（``index.js``）中使用，否则会报错：
+
+```
+[28177:0613/150115:INFO:CONSOLE(336)] "Uncaught Error: Cannot find module 'global-shortcut'", source: module.js (336)
+```
+
+在``electron``新版本中，把``electron``相关库都整合在一起，会方便很多：
+
+``` javascript
+var electron = require('electron');
+console.log('globalShortcut: ' + electron.globalShortcut.isRegistered('ctrl+x'));
+```
+
+这样我们只需理解并记住：
+
+>``require('electron');`` 只出现在 ``main.js``中，其他渲染的js都不能引用``electron``，必须借助``IPC``机制实现跨进程的消息事件机制。
+
+
+- 事件传递
+
+>Why ``mainWindow.webContents.send`` rather than ``ipc.send`` used in tag ``03-closable-sound-machine``
+
+>i am a java programmer and know only a little about ``electron`` and ``node.js``, thanks very much for your step-by-step style tutorial [building-a-desktop-application-with-electron](https://medium.com/developers-writing/building-a-desktop-application-with-electron-204203eeb658)  and source code [sound-machine-electron-guide](https://github.com/bojzi/sound-machine-electron-guide).
+
+>i don't understand this gist. in the tag named ``03-closable-sound-machine``,  it is through ``IPC`` channel that button clicking events are generated in renderer process and sent to the main process. why can't i code like as follows in tag ``04-global-shortcuts-bound``   ?  thanks a lot.
+
+>
+``` javascript
+var globalShortcut = require('global-shortcut');
+var ipc = require('ipc');    // load ipc module
+app.on('ready', function() {
+    ... // existing code from earlier
+
+    globalShortcut.register('ctrl+shift+1', function () {
+           //  mainWindow.webContents.send('global-shortcut', 0);
+           ipc.send('global-shortcut', 0);
+    });
+    globalShortcut.register('ctrl+shift+2', function () {
+        // mainWindow.webContents.send('global-shortcut', 1);
+        ipc.send('global-shortcut', 1);
+    });
+});
+```
+[这个 gist](https://gist.github.com/bojzi/e805132f2c737d1a39c4#file-main-js) 让人有点不明白：
+
+之前作者说的都是基于``IPC``进行事件传递（从渲染进程到主进程）。现在从主进程到渲染进程，却没法完全用``IPC``，而是在主进程中用``mainWindow.webContents.send``，在渲染进程中才继续用``ipc.on``。这是为什么？
+
+#### 正确做法
+
+
+
 ---
 
 # 参考资料
