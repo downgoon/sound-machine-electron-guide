@@ -3,6 +3,12 @@
 var app = require('app');
 var BrowserWindow = require('browser-window');
 
+// 快捷键
+var globalShortcut = require('global-shortcut');
+
+// 进程间通信
+var ipc = require('ipc');
+
 var mainWindow = null;
 
 app.on('ready', function() {
@@ -14,14 +20,19 @@ app.on('ready', function() {
     });
 
     mainWindow.loadUrl('file://' + __dirname + '/app/index.html');
+
+    // global shortcut events register
+    globalShortcut.register('ctrl+shift+1', function () {
+        mainWindow.webContents.send('global-shortcut', 0);
+           // ipc.send('global-shortcut', 0);
+    });
+    globalShortcut.register('ctrl+shift+2', function () {
+        mainWindow.webContents.send('global-shortcut', 1);
+        // ipc.send('global-shortcut', 1);
+    });
 });
 
-var ipc = require('ipc');
 
 ipc.on('close-main-window', function () {
     app.quit();
 });
-
-
-// 快捷键
-var globalShortcut = require('global-shortcut');

@@ -26,5 +26,6 @@ closeEl.addEventListener('click', function () {
     ipc.send('close-main-window');
 });
 
-// 快捷键
-// var globalShortcut = require('global-shortcut');
+ipc.on('global-shortcut', function (scid) {
+    console.log('快捷键编号：' + scid);
+});
