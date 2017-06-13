@@ -18,3 +18,12 @@ function prepareButton(buttonEl, soundName) {
         audio.play();
     });
 }
+
+// event pub in renderer process
+
+var ipc = require('ipc');
+
+var closeEl = document.querySelector('.close');
+closeEl.addEventListener('click', function () {
+    ipc.send('close-main-window');
+});

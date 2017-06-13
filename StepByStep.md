@@ -171,7 +171,17 @@ function prepareButton(buttonEl, soundName) {
 
 >代码提交：``commit 49459eb98300f79a13d0``；注解：``sounding on button clicked``
 
+
+对比 ``tag-01``与``tag-02``的区别，只在``index.js``加了处理逻辑：
+
+``` bash
+$ git diff 01-start-project 02-basic-sound-machine
+```
+
+
 ### T02 进程间通信
+
+#### 教程代码
 
 进入``02-basic-sound-machine`` tag ：
 
@@ -198,6 +208,87 @@ $ git checkout T01 StepByStep.md
 ``` bash
 $ git diff 02-basic-sound-machine 03-closable-sound-machine
 ```
+
+#### 任务目标
+
+![](assets/markdown-img-paste-20170613123418262.png)
+
+任务目标是在右上角的关闭按钮点击时，能够关闭窗口。
+
+
+
+官方资料显示：
+
+>在web页面（``index.js/css/html``），不允许调用原生GUI相关的API（``electron.app``和``electron.BrowserWindow``），因为在web页面管理原生GUI资源是很危险的，会很容易泄露资源。如果你想在web页面施行GUI操作，web页面的渲染进程必须要与主进程通信，请求主进程来完成这些操作。
+
+
+#### 正确做法
+
+
+![](assets/markdown-img-paste-20170613124219914.png)
+
+- 在``index.js``订阅关闭按钮
+
+在``index.js``订阅关闭按钮，并在用户点击时，向``main.js``发送事件通知，以便``main.js``中执行``app.quit()``方法。
+
+``` javascript
+
+// event pub in renderer process
+
+var ipc = require('ipc');
+
+// 获取index.html中的“关闭按钮”
+var closeEl = document.querySelector('.close');
+
+// 给关闭按钮注册事件
+closeEl.addEventListener('click', function () {
+    ipc.send('close-main-window');
+});
+```
+
+- 关闭按钮样式
+
+关闭按钮通过：html的div，加css渲染。
+
+关闭按钮在index.html里面的位置：
+
+``` html
+<div class="close">Close</div>
+```
+
+关闭按钮在index.css里面的样式：
+
+``` css
+.close {
+    cursor: pointer;
+    display: inline-block;
+    height: 32px;
+    position: absolute;
+    text-indent: -10000px;
+    top: 6px;
+    width: 32px;
+    z-index: 1;
+
+    -webkit-app-region: no-drag;
+}
+```
+
+- 在main.js进行事件响应
+
+``` javascript
+
+// event sub in main process
+var ipc = require('ipc');
+
+// 处理`close-main-window`事件
+ipc.on('close-main-window', function () {
+    app.quit();
+});
+```
+
+处理`close-main-window`事件的核心动作就是执行``app.quit()``。
+
+提交点是：``T02``分支的，``quit right``。
 
 ---
 
