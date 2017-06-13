@@ -330,7 +330,7 @@ closeEl.addEventListener('click', function () {
 [24629:0613/133122:INFO:renderer_main.cc(200)] Renderer process started
 ```
 
-代码提交是``T02``的``quit on mydef event``，提交：``commit ``。
+代码提交是``T02``的``quit on mydef event``，提交：``commit 8b6bbde6f7086adf884e4``。
 
 ---
 
