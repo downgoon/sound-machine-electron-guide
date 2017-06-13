@@ -27,7 +27,15 @@ closeEl.addEventListener('click', function () {
 });
 
 ipc.on('global-shortcut', function (scid) {
-    console.log('快捷键编号：' + scid);
+    if (scid == 0) {
+        var audio = new Audio(__dirname + '/wav/' + 'money' + '.wav');
+        audio.play();
+
+    } else {
+        var event = new MouseEvent('click');
+        soundButtons[scid].dispatchEvent(event);
+    }
+
 });
 
 ipc.on('ctrl-shift-3', function() {

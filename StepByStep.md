@@ -513,6 +513,32 @@ ipc.on('ctrl-shift-3', function() {
 });
 ```
 
+- 样例代码
+
+代码提交点：``commit a26c8915645a91ad``，注释：``T03 错误做法``。
+
+#### 触发声音
+
+截止目前只是有了事件传递，事件响应还没有触发发出声音，只是打印了一条日志。
+
+``` javascript
+
+ipc.on('global-shortcut', function (scid) {
+    if (scid == 0) {
+        var audio = new Audio(__dirname + '/wav/' + 'money' + '.wav');
+        audio.play();
+
+    } else {
+        var event = new MouseEvent('click');
+        soundButtons[scid].dispatchEvent(event);
+    }
+
+});
+
+```
+
+上面代码有了两种方式触发声音：第一种是直接播放声音；第二种是触发了一个鼠标点击事件，再复用了鼠标点击的响应。其中``soundButtons``是之前用DOM选择出来的所有按钮的数组。
+
 ---
 
 # 参考资料
