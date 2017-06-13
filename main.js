@@ -20,6 +20,6 @@ app.on('ready', function() {
 
 var ipc = require('ipc');
 
-ipc.on('close-main-window', function () {
+ipc.on('mydef-close-main-window', function () {
     app.quit();
 });

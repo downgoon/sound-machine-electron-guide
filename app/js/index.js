@@ -21,11 +21,18 @@ function prepareButton(buttonEl, soundName) {
 
 // get app directory in index.js
 
-// var appIndex = require('app');
-var appIndex = require('electron').app;
+var ipc = require('ipc');
 
 var closeEl = document.querySelector('.close');
 closeEl.addEventListener('click', function () {
-    console.log('quit directory in index.js');
-    appIndex.quit();
+    ipc.send('mydef-close-main-window');
 });
+
+// // var appIndex = require('app');
+// var appIndex = require('electron').app;
+//
+// var closeEl = document.querySelector('.close');
+// closeEl.addEventListener('click', function () {
+//     console.log('quit directory in index.js');
+//     appIndex.quit();
+// });

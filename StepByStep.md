@@ -318,7 +318,20 @@ closeEl.addEventListener('click', function () {
 
 >在web页面（``index.js/css/html``），不允许调用原生GUI相关的API（``electron.app``和``electron.BrowserWindow``），因为在web页面管理原生GUI资源是很危险的，会很容易泄露资源。如果你想在web页面施行GUI操作，web页面的渲染进程必须要与主进程通信，请求主进程来完成这些操作。
 
-代码提交是``T02``的``quit error``，提交：````
+代码提交是``T02``的``quit error``，提交：``commit 75f94105854094f3``。
+
+#### 自定义事件
+
+把``close-main-window``事件写成``mydef-close-main-window``，也是可以的。
+
+``npm start``后的日志显示：
+
+``` bash
+[24629:0613/133122:INFO:renderer_main.cc(200)] Renderer process started
+```
+
+代码提交是``T02``的``quit on mydef event``，提交：``commit ``。
+
 ---
 
 # 参考资料
