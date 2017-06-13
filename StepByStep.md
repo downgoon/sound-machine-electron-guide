@@ -471,7 +471,29 @@ app.on('ready', function() {
 
 #### 正确做法
 
+- 在``main.js``注册快键键
 
+在 ``app.on('ready')`` 代码块中，增加：
+
+``` javascript
+
+// global shortcut events register
+globalShortcut.register('ctrl+shift+1', function () {
+		mainWindow.webContents.send('global-shortcut', 0);
+});
+globalShortcut.register('ctrl+shift+2', function () {
+		mainWindow.webContents.send('global-shortcut', 1);
+});
+```
+
+- 在``index.js``响应快捷键
+
+``` javascript
+var ipc = require('ipc');
+ipc.on('global-shortcut', function (scid) {
+    console.log('快捷键编号：' + scid);
+});
+```
 
 ---
 
