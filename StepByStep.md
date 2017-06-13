@@ -2,14 +2,36 @@
 
 <!--  toc -->
 
+<!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
+
+- [StepByStep](#stepbystep)
+	- [使用说明](#使用说明)
+	- [任务目标](#任务目标)
+	- [程序结构](#程序结构)
+	- [逐步重现](#逐步重现)
+		- [T01 完成主进程 main.js](#t01-完成主进程-mainjs)
+		- [T01 点击按钮发出声音](#t01-点击按钮发出声音)
+		- [T02 进程间通信](#t02-进程间通信)
+			- [教程代码](#教程代码)
+			- [任务目标](#任务目标)
+			- [正确做法](#正确做法)
+			- [错误做法](#错误做法)
+			- [自定义事件](#自定义事件)
+- [参考资料](#参考资料)
+
+<!-- /TOC -->
 
 ## 使用说明
 
+- 下载代码
+
 ``` bash
-$ git clone https://github.com/bojzi/sound-machine-electron-guide.git
+$ git clone https://github.com/downgoon/sound-machine-electron-guide.git
 $ git checkout <tag-name>
 $ npm install
 ```
+
+- 查看 tag 和 分支
 
 ```
 $ git tag
@@ -21,6 +43,39 @@ $ git tag
 05-settings-window-working
 06-shortcuts-configurable
 07-ready-for-packaging
+
+$ git branch
+  T01
+* T02
+  master
+```
+
+- 版本结构
+
+![](assets/StepByStep.png)
+
+上图黑色主线是``master``主干，上面有许多``tag``，每个``tag``表示一个功能，用``tag``标记的方式记录和展示了程序功能的演进。例如``tag-02``（实际名字是``02-basic-sound-machine``）的功能是点击按钮时，发出声音；``tag-03``是在``tag-02``的基础上增加了对关闭按钮的响应。
+
+橙色分支是供大家跟随教程学习用的。比如``branch-T01``（实际名字是``T01``），它是从``tag-01``发源的，然后自己编写代码，以达到``tag-02``的功能为终止。这样做的目的是，让读者自己动手，从``tag-01``演进到``tag-02``，相比单纯看代码演进要更有效果。
+
+``` bash
+
+// 进入 tag-01
+$ git checkout 01-start-project
+
+// 开启 分支学习：分支发源于 tag-01
+$ git chechout -b T01
+
+// 跟随教程，编写代码，向着 tag-02 的功能前进
+
+// 提交自己的代码到 T01 分支
+
+// 对比 T01分支 与 tag-02 的功能
+
+// 对比 T01分支 与 tag-02 的代码
+
+$ git diff T01 02-basic-sound-machine
+
 ```
 
 ## 任务目标
