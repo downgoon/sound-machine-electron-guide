@@ -19,11 +19,13 @@ function prepareButton(buttonEl, soundName) {
     });
 }
 
-// event pub in renderer process
+// get app directory in index.js
 
-var ipc = require('ipc');
+// var appIndex = require('app');
+var appIndex = require('electron').app;
 
 var closeEl = document.querySelector('.close');
 closeEl.addEventListener('click', function () {
-    ipc.send('close-main-window');
+    console.log('quit directory in index.js');
+    appIndex.quit();
 });

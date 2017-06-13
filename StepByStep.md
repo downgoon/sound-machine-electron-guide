@@ -216,12 +216,6 @@ $ git diff 02-basic-sound-machine 03-closable-sound-machine
 任务目标是在右上角的关闭按钮点击时，能够关闭窗口。
 
 
-
-官方资料显示：
-
->在web页面（``index.js/css/html``），不允许调用原生GUI相关的API（``electron.app``和``electron.BrowserWindow``），因为在web页面管理原生GUI资源是很危险的，会很容易泄露资源。如果你想在web页面施行GUI操作，web页面的渲染进程必须要与主进程通信，请求主进程来完成这些操作。
-
-
 #### 正确做法
 
 
@@ -288,8 +282,43 @@ ipc.on('close-main-window', function () {
 
 处理`close-main-window`事件的核心动作就是执行``app.quit()``。
 
-提交点是：``T02``分支的，``quit right``。
+提交点是：``T02``分支的``commit 740e75a2f7a2194``，注解是：``quit right``。
 
+#### 错误做法
+
+为什么关闭程序，非要用``事件机制``呢？ 我们能不能直接在``index.js``里面，监听点击事件，并且执行``app.quit()``呢？
+
+比如在``index.js``里面的代码：
+
+``` javascript
+// get app directory in index.js
+
+// 直接在index.js里面获取app对象
+// var appIndex = require('app');
+var appIndex = require('electron').app;
+
+// 当点击关闭按钮时，直接执行app.quit()
+var closeEl = document.querySelector('.close');
+closeEl.addEventListener('click', function () {
+    console.log('quit directory in index.js');
+    appIndex.quit();
+});
+```
+
+然后这样的代码``npm start``运行适，直接异常：
+
+```
+[23169:0613/130237:INFO:CONSOLE(336)] "Uncaught Error: Cannot find module 'app'", source: module.js (336)
+[23234:0613/130306:INFO:CONSOLE(336)] "Uncaught Error: Cannot find module 'electron'", source: module.js (336)
+```
+
+>也就是说，在渲染进程``index.js``是不允许获取``electron``的，不允许获取``electron.app``对象的。
+
+官方资料显示：
+
+>在web页面（``index.js/css/html``），不允许调用原生GUI相关的API（``electron.app``和``electron.BrowserWindow``），因为在web页面管理原生GUI资源是很危险的，会很容易泄露资源。如果你想在web页面施行GUI操作，web页面的渲染进程必须要与主进程通信，请求主进程来完成这些操作。
+
+代码提交是``T02``的``quit error``，提交：````
 ---
 
 # 参考资料
