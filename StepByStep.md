@@ -90,7 +90,9 @@ $ git diff T01 02-basic-sound-machine
 - T06: 打包你的应用（把你的应用打包成 Mac，Windows，Linux下可用的版本）。
 
 ## 程序结构
-.
+
+``` bash
+$ tree . -L 1
 ├── LICENSE
 ├── main.js
 ├── package.json
@@ -101,6 +103,7 @@ $ git diff T01 02-basic-sound-machine
     ├── js
     ├── settings.html
     └── wav
+```
 
 ## 逐步重现
 
@@ -254,6 +257,9 @@ $ git checkout -b T02
 
 ``` bash
 $ git checkout T01 StepByStep.md
+
+// 不要遗忘了 StepByStep.md 引用的图片
+$ git checkout T01 assets
 ```
 
 >普通的合并``git merge``是会把所有变更都合并，而``git checkout T01 StepByStep.md``只会把``T01``分支的``StepByStep.md``一个文件合并到``T02``分支。
