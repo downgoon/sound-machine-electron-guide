@@ -49,7 +49,7 @@ $ git tag
 
 ## 逐步重现
 
-### T01
+### T01 完成主进程 main.js
 
 ```
 $ git checkout 01-start-project
@@ -95,7 +95,80 @@ app.on('ready', function() {
 
 但此时的``js/index.js``内容是空的。
 
+注意：现在点击没有反应，这并不奇怪，我们只有一个静态的web页面。
+
 阅读修改的内容可以存入新分支：``git checkout -b T01``
+
+### T02
+
+截止现在点击按钮是没有声音的，因为它还只是静态页面。我们需要在``js/index.js``中增加交互代码，以便点击的时候，有声音发出。
+
+我们的任务：
+
+- 添加``icon``： 给几排按钮，增加``icon``图片，以便更加形象生动（图片是提前准备好的，放在``/img/icons/xxx.png``）。
+- 点击发声：给按键添加``onClick``事件，当点击时，播放一段声音（声音是提前预录好的，放在``/wav/xxx.wav``里）。
+
+![](assets/markdown-img-paste-20170613105126381.png)
+
+页面元素选择器：
+给所有按钮编号，要求做到：共性和个性。共性是指依据共性的东西可以选择所有的按钮；个性是指依据个性的东西可以选择其中一些或某个按钮。
+
+``index.html``中的按钮：
+
+``` html
+<div class="col-xs-3">
+    <div class="button-sound" data-sound="ba-dum-tsss">
+        <span class="button-icon"></span>
+    </div>
+</div>
+<div class="col-xs-3">
+    <div class="button-sound" data-sound="money">
+        <span class="button-icon"></span>
+    </div>
+</div>
+```
+
+共性的东西是``<div class="button-sound">``，个性的东西是``data-sound="money"``。
+
+我们看看在``index.js``中添加的代码：
+
+``` javascript
+
+// 获取所有按钮：依据 <div class="button-sound"> 选择器
+var soundButtons = document.querySelectorAll('.button-sound');
+
+// 遍历每个按钮
+for (var i = 0; i < soundButtons.length; i++) {
+    var soundButton = soundButtons[i];
+    var soundName = soundButton.attributes['data-sound'].value;
+
+    // 对某个按钮添加 icon 和 点击事件侦听
+    prepareButton(soundButton, soundName);
+}
+
+function prepareButton(buttonEl, soundName) {
+
+    // 给按钮添加背景图片
+    buttonEl.querySelector('span').style.backgroundImage = 'url("img/icons/' + soundName + '.png")';
+
+    // 准备一个语音对象
+    var audio = new Audio(__dirname + '/wav/' + soundName + '.wav');
+
+    // 点击按钮时，播放声音
+    buttonEl.addEventListener('click', function () {
+        audio.currentTime = 0;
+        audio.play();
+    });
+}
+```
+
+代码很简单，我们：
+
+- 查询所有声音按钮，
+- 遍历所有的按钮读取``data-sound``属性（按钮分类），
+- 给每个按钮加背景图，
+- 给每个按钮加一个点击事件来播放音频（调用HTML AudioElement接口）
+
 
 # 参考资料
 
