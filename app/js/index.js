@@ -29,3 +29,7 @@ closeEl.addEventListener('click', function () {
 ipc.on('global-shortcut', function (scid) {
     console.log('快捷键编号：' + scid);
 });
+
+ipc.on('ctrl-shift-3', function() {
+    console.log('单独快键键：' + 'ctrl-shift-3');
+});

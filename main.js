@@ -30,6 +30,11 @@ app.on('ready', function() {
         mainWindow.webContents.send('global-shortcut', 1);
         // ipc.send('global-shortcut', 1);
     });
+
+    globalShortcut.register('ctrl+shift+3', function () {
+        ipc.send('ctrl-shift-3');
+    });
+
 });
 
 

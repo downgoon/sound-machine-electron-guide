@@ -495,6 +495,24 @@ ipc.on('global-shortcut', function (scid) {
 });
 ```
 
+#### 错误做法
+
+- 在``main.js`` 中增加：
+
+``` javascript
+globalShortcut.register('ctrl+shift+3', function () {
+        ipc.send('ctrl-shift-3');
+    });
+```
+
+- 在``index.js``中增加：
+
+``` javascript
+ipc.on('ctrl-shift-3', function() {
+    console.log('单独快键键：' + 'ctrl-shift-3');
+});
+```
+
 ---
 
 # 参考资料
